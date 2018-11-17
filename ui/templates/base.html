@@ -1,0 +1,46 @@
+{%  load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block head_title %} Django Pop {% endblock %}</title>
+    <style>
+        .message.error { color: red; }
+        .message.success { color: green; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="{% url 'home' %}">Home</a> |
+        {% if not user.is_authenticated %}
+            <a href="{% url 'login' %}">Login</a> |
+            <a href="{% url 'signup' %}">Sign up</a>
+        {% else %}
+            <a href="{% url 'logout' %}">Logout</a>
+        {% endif %}
+    </nav>
+
+    {%  if messages %}
+        <hr>
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{  message }}</div>
+        {% endfor %}
+    {%  endif %}
+
+    <hr>
+
+    <h1>{% block main_title %} {% endblock %}</h1>
+
+    <main>
+        {% block main_body %} {% endblock %}
+    </main>
+
+    <hr>
+
+    <footer>
+        Wordplease. All rights reserved &copy; {% now "Y" %}
+    </footer>
+
+</body>
+</html>

@@ -13,3 +13,5 @@ class Post(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     last_modification = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return '{0} ({1})'.format(self.title, self.published)
