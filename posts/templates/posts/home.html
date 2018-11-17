@@ -11,6 +11,9 @@
                 <strong>{{ post.title }}</strong>
                 <img src="{{ post.image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
                 <p>{{ post.summary }}</p>
+                {% for category in post.categories.all %}
+                    {{ category.name }}&nbsp;
+                {% endfor %}
                 <em>Posted by {{ post.owner.first_name }} {{ post.owner.last_name }}</em>
             </a>
         {% endfor %}
