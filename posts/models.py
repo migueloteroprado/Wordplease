@@ -13,7 +13,7 @@ class Post(models.Model):
     image = models.FileField(blank=True, null=True)
     categories = models.ManyToManyField(Category)
     published = models.BooleanField()
-    pub_date = models.DateTimeField(auto_now_add=True)
+    pub_date = models.DateTimeField()
     last_modification = models.DateTimeField(auto_now=True)
 
     def __str__(self):

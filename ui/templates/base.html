@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block head_title %} Django Pop {% endblock %}</title>
+    <title>{% block head_title %} Wordplease {% endblock %}</title>
     <style>
         .message.error { color: red; }
         .message.success { color: green; }
@@ -17,6 +17,7 @@
             <a href="{% url 'login' %}">Login</a> |
             <a href="{% url 'signup' %}">Sign up</a>
         {% else %}
+            <a href="{% url 'new_post' %}">New Post</a> |
             <a href="{% url 'logout' %}">Logout</a>
         {% endif %}
     </nav>
