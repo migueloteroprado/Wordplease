@@ -1,9 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views import View
 
+from project.settings import ITEMS_PER_PAGE
 from users.forms import SignupForm, LoginForm
 
 
@@ -23,6 +25,7 @@ class LoginView(View):
             # si el usuario existe, tenemos que hacer login del usuario en la sesión
             django_login(request, user)
             welcome_url = request.GET.get('next', 'home')
+            messages.success(request, 'Logged in succesfully')
             return redirect(welcome_url)
 
         return render(request, 'users/login.html')
@@ -56,3 +59,17 @@ class SignupView(View):
             form = SignupForm()
 
         return render(request, 'users/signup.html', {'form': form})
+
+
+class BlogListView(View):
+
+    def get(self, request):
+
+        user_list = User.objects.all().order_by('username')
+
+        # Pagination
+        paginator = Paginator(user_list, ITEMS_PER_PAGE)
+        page = request.GET.get('page')
+        users = paginator.get_page(page)
+
+        return render(request, 'users/blogs.html', {'users': users })

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 
 class LoginForm(forms.Form):
@@ -11,14 +12,16 @@ class LoginForm(forms.Form):
 class SignupForm(forms.Form):
 
     username = forms.CharField()
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)
-    email = forms.EmailField(required=False)
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput())
     password_confirmation = forms.CharField(widget=forms.PasswordInput())
 
     def clean_username(self):
         username = self.cleaned_data.get('username', '').lower()
+        if username != slugify(username):
+            raise forms.ValidationError('Invalid Username \'{0}\'. It can only contain letters, numbers and underscores'.format(username))
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError('User {0} already exists'.format(username))
         return username

@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 
-{% block main_title %} Wordplease {% endblock %}
+{% block main_title %} {{ title }} {% endblock %}
 
 {% block main_body %}
     <p>A simple blog</p>
     <hr>
     <div>
         {% for post in posts %}
-            <a href="#" class="post">
+            <a href="{% url 'post_detail' post.author.username post.pk %}" class="post">
                 <strong>{{ post.title }}</strong>
                 <img src="{{ post.image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
                 <p>{{ post.summary }}</p>
                 {% for category in post.categories.all %}
                     {{ category.name }}&nbsp;
                 {% endfor %}
-                <em>Posted by {{ post.owner.first_name }} {{ post.owner.last_name }}</em>
+                <em>Posted by {{ post.author.first_name }} {{ post.author.last_name }}</em>
             </a>
         {% endfor %}
     </div>
