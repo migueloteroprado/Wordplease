@@ -1,7 +1,11 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
-from users.api import BlogListAPIView
+from users.api import UsersViewSet
 from users.views import LoginView, LogoutView, SignupView, BlogListView
+
+router = DefaultRouter()
+router.register('users', UsersViewSet, base_name='users')
 
 urlpatterns = [
     path('blogs/', BlogListView.as_view(), name='blogs'),
@@ -11,5 +15,5 @@ urlpatterns = [
     path('register/', SignupView.as_view(), name='signup'),
 
     # API
-    path('api/1.0/blogs/', BlogListAPIView.as_view(), name='blog_list_api')
+    path('api/1.0/', include(router.urls)),
 ]

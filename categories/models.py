@@ -13,6 +13,3 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
-    def slug(self):
-        return slugify(self.name)

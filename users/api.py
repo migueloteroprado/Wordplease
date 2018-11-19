@@ -1,13 +1,16 @@
 from django.contrib.auth.models import User
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
-from users.serializers import UserSerializer
+from users.permissions import UserPermission
+from users.serializers import UserSerializer, UserListSerializer
 
 
-class BlogListAPIView(APIView):
+class UsersViewSet(ModelViewSet):
 
-    def get(self, request):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
+    queryset = User.objects.all()
+    permission_classes = [UserPermission]
+
+    def get_serializer_class(self):
+        return UserListSerializer if self.action == 'list' else UserSerializer
+
+
