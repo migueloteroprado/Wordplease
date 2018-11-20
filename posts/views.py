@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DetailView
 
+from blogs.models import Blog
 from posts.forms import NewPostForm
 from posts.models import Post
 from project.settings import ITEMS_PER_PAGE
@@ -49,13 +50,13 @@ class NewPostView(View):
 
 class BlogView(View):
 
-    def get(self, request, username):
+    def get(self, request, blog):
 
-        user = get_object_or_404(User, username=username)
+        blog = get_object_or_404(Blog, slug=blog)
 
         posts_list = Post.objects\
             .select_related('author')\
-            .filter(status=Post.PUBLISHED, author=user.id)\
+            .filter(status=Post.PUBLISHED, author=blog.owner)\
             .order_by('-last_modification')
 
         paginator = Paginator(posts_list, ITEMS_PER_PAGE)
@@ -63,7 +64,7 @@ class BlogView(View):
         posts = paginator.get_page(page)
         context = {
             'posts': posts,
-            'title': '{0} {1}'.format(user.first_name, user.last_name)
+            'title': blog.name
         }
         return render(request, 'posts/posts.html', context)
 

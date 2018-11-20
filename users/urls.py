@@ -1,8 +1,9 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
+from blogs.views import BlogListView
 from users.api import UsersViewSet
-from users.views import LoginView, LogoutView, SignupView, BlogListView
+from users.views import LoginView, LogoutView, SignupView
 
 router = DefaultRouter()
 router.register('users', UsersViewSet, base_name='users')

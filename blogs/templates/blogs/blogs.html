@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block head_title %} Blog List {% endblock %}
+
+{% block main_title %} Blog List {% endblock %}
+
+{% block main_body %}
+
+    <hr>
+
+    <div class="blogs-wrapper">
+        {% for blog in blogs%}
+            <div class="blog">
+                <a href="{% url 'blog' blog.slug %}" class="blog">
+                    <strong>{{ blog.name}} ({{ blog.owner.first_name }} {{ blog.owner.last_name }})</strong>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if blogs.has_previous %}
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ blogs.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}.
+            </span>
+
+            {% if blogs.has_next %}
+                <a href="?page={{ blogs.next_page_number }}">Next</a>
+                <a href="?page={{ blogs.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+{%  endblock %}
