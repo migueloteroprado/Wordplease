@@ -6,17 +6,19 @@ from users.serializers import UserListSerializer
 
 class BlogListSerializer(serializers.HyperlinkedModelSerializer):
 
-    owner = UserListSerializer(many=False)
+    author = UserListSerializer(many=False)
+
+    url = serializers.HyperlinkedIdentityField(view_name='blogs-detail', format='html')
 
     class Meta:
 
         model = Blog
-        fields = ['id', 'name', 'owner']
+        fields = ['id', 'url', 'name', 'author']
 
 
 class BlogSerializer(BlogListSerializer):
 
     class Meta(BlogListSerializer.Meta):
 
-        fields = ['id', 'name', 'description']
-        read_only_fields = ['owner']
+        fields = ['id', 'name', 'description', 'author']
+        read_only_fields = ['author']
