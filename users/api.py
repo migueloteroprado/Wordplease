@@ -14,4 +14,3 @@ class UsersViewSet(ModelViewSet):
         return UserListSerializer if self.action == 'list' else UserSerializer
 
 
-

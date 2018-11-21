@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ViewSet, ModelViewSet
 
 from blogs.models import Blog
+from blogs.permissions import BlogPermission
 from blogs.serializers import BlogListSerializer, BlogSerializer
 from posts.models import Post
 from posts.serializers import PostListSerializer
@@ -16,6 +17,7 @@ from project.utils import CaseInsensitiveOrderingFilter
 class BlogsViewSet(ModelViewSet):
 
     queryset = Blog.objects.select_related('author').all()
+    permission_classes = [BlogPermission]
     filter_backends = [CaseInsensitiveOrderingFilter, SearchFilter]
     search_fields = ['author__username', 'author__first_name', 'author__last_name']
     ordering_fields = ['name']
@@ -23,6 +25,9 @@ class BlogsViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         return BlogListSerializer if self.action == 'list' else BlogSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class BlogPostsAPIView(APIView):
@@ -32,4 +37,3 @@ class BlogPostsAPIView(APIView):
         posts = Post.objects.prefetch_related('categories').select_related('author').filter(author=user.id)
         serializer = PostListSerializer(posts, many=True)
         return Response(serializer.data)
-
