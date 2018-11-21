@@ -9,13 +9,7 @@
     <form method="POST" novalidate>
         {%  csrf_token %}
 
-        <h3>User Data</h3>
-
-        {{ user_form.as_p }}
-
-        <h3>Blog Data</h3>
-
-        {{ blog_form.as_p }}
+        {{ form.as_p }}
 
         <button type="submit">Sign up</button>
 

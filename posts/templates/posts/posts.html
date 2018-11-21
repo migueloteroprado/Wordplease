@@ -7,7 +7,7 @@
     <hr>
     <div>
         {% for post in posts %}
-            <a href="{% url 'post_detail' post.author.username post.pk %}" class="post">
+            <a href="{% url 'post-detail' post.blog.slug post.pk %}" class="post">
                 <strong>{{ post.title }}</strong>
                 <img src="{{ post.image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
                 <p>{{ post.summary }}</p>

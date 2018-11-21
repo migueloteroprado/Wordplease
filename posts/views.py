@@ -34,29 +34,29 @@ class NewPostView(View):
 
     @method_decorator(login_required)
     def get(self, request):
-        form = NewPostForm()
+        form = NewPostForm(user=request.user)
         return render(request, 'posts/new-post.html', {'form': form})
 
     @method_decorator(login_required)
     def post(self, request):
         new_post = Post(author=request.user)
-        form = NewPostForm(request.POST, request.FILES, instance=new_post)
+        form = NewPostForm(request.POST, request.FILES, instance=new_post, user=request.user)
         if form.is_valid():
             new_post = form.save()
             messages.success(request, 'Post {0} created successfully!'.format(new_post.title))
-            form = NewPostForm()
+            form = NewPostForm(user=request.user)
         return render(request, 'posts/new-post.html', {'form': form})
 
 
 class BlogView(View):
 
-    def get(self, request, blog):
+    def get(self, request, slug):
 
-        blog = get_object_or_404(Blog, slug=blog)
+        blog = get_object_or_404(Blog, slug=slug)
 
         posts_list = Post.objects\
             .select_related('author')\
-            .filter(status=Post.PUBLISHED, author=blog.owner)\
+            .filter(status=Post.PUBLISHED, blog=blog.id)\
             .order_by('-last_modification')
 
         paginator = Paginator(posts_list, ITEMS_PER_PAGE)

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block head_title %} New Blog {% endblock %}
+
+{% block main_title %} New Blog {% endblock %}
+
+{% block main_body %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Blog</button>
+    </form>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.template.defaultfilters import slugify
 
+from blogs.models import Blog
 from categories.models import Category
 
 
@@ -16,6 +16,7 @@ class Post(models.Model):
     )
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     summary = models.CharField(max_length=200)
     body = models.TextField()

@@ -6,12 +6,12 @@ from blogs.models import Blog
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
 
-    readonly_fields = ['owner', 'slug']
-    list_display = ['name', 'description', 'owner_fullname']
-    search_fields = ['name', 'description', 'slug']
-    ordering = ['owner']
+    readonly_fields = ['slug']
+    list_display = ['name', 'description', 'author_fullname']
+    search_fields = ['name', 'description']
+    ordering = ['author']
 
-    def owner_fullname(self, obj):
-        return '{0} {1}'.format(obj.owner.first_name, obj.owner.last_name)
+    def author_fullname(self, obj):
+        return '{0} {1}'.format(obj.author.first_name, obj.author.last_name)
 
-    owner_fullname.admin_order_field = 'owner__first_name'
+    author_fullname.admin_order_field = 'author__first_name'

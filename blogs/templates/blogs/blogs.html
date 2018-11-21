@@ -9,10 +9,10 @@
     <hr>
 
     <div class="blogs-wrapper">
-        {% for blog in blogs%}
+        {% for blog in blogs %}
             <div class="blog">
-                <a href="{% url 'blog' blog.slug %}" class="blog">
-                    <strong>{{ blog.name}} ({{ blog.owner.first_name }} {{ blog.owner.last_name }})</strong>
+                <a href="{% url 'blog' blog.slug %}">
+                    <strong>{{ blog.name}} ({{ blog.author.first_name }} {{ blog.author.last_name }})</strong>
                 </a>
             </div>
         {% endfor %}

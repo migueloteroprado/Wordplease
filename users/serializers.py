@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 from rest_framework import serializers
 
 
@@ -29,12 +30,13 @@ class UserSerializer(UserListSerializer):
         return instance
 
     def validate_username(self, value):
+        username = slugify(value)
         # validacion si estoy actualizando un usuario
-        if self.instance is not None and self.instance.username != value and User.objects.filter(username=value).exists():
-            raise serializers.ValidationError('Username {0} already exists'.format(value))
+        if self.instance is not None and self.instance.username != username and User.objects.filter(username=username).exists():
+            raise serializers.ValidationError('Username {0} already exists'.format(username))
 
         # validacion si estoy creando un usuario
-        if self.instance is None and User.objects.filter(username=value).exists():
-            raise serializers.ValidationError('Username {0} already exists'.format(value))
+        if self.instance is None and User.objects.filter(username=username).exists():
+            raise serializers.ValidationError('Username {0} already exists'.format(username))
 
-        return value
+        return username
