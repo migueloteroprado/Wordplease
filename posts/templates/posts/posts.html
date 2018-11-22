@@ -3,7 +3,23 @@
 {% block main_title %} {{ title }} {% endblock %}
 
 {% block main_body %}
-    <hr>
+    <hr xmlns="http://www.w3.org/1999/html">
+
+    {% if categories %}
+        <form>
+            <label for="categories">Category
+                <select name="categories">
+                    <option value="0" {% if cat_selected is None %} selected {% endif %}>---</option>
+                    {% for category in categories %}
+                        <option value="{{ category.pk }}"
+                            {% if category.pk == cat_selected %} selected {% endif %}
+                        >{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button type="submit">Filter</button>
+        </form>
+    {% endif %}
 
     {% if posts|length > 0 %}
 
@@ -11,15 +27,18 @@
             {% for post in posts %}
                  <a href="{% url 'post-detail' post.blog.slug post.pk %}" class="post">
                     <strong>{{ post.title }}</strong>
+                    <br>
                     {%  if post.image %}
                        <img src="{{ post.image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
+                        <br>
                     {% endif %}
                     <p>{{ post.summary }}</p>
                     {% for category in post.categories.all %}
-                        {{ category.name }}&nbsp;
+                        {{ category.name }}
                     {% endfor %}
                     <em>Posted by {{ post.author.first_name }} {{ post.author.last_name }}</em>
                 </a>
+                <hr>
             {% endfor %}
         </div>
 
