@@ -5,6 +5,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ViewSet, ModelViewSet
+from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from blogs.models import Blog
 from blogs.permissions import BlogPermission
@@ -14,7 +15,7 @@ from posts.serializers import PostListSerializer
 from project.utils import CaseInsensitiveOrderingFilter
 
 
-class BlogsViewSet(ModelViewSet):
+class BlogsViewSet(NestedViewSetMixin, ModelViewSet):
 
     queryset = Blog.objects.select_related('author').all()
     permission_classes = [BlogPermission]
@@ -29,11 +30,3 @@ class BlogsViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-
-class BlogPostsAPIView(APIView):
-
-    def get(self, request, username):
-        user = get_object_or_404(User, username=username)
-        posts = Post.objects.prefetch_related('categories').select_related('author').filter(author=user.id)
-        serializer = PostListSerializer(posts, many=True)
-        return Response(serializer.data)

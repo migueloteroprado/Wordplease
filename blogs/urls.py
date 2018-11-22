@@ -1,12 +1,26 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from rest_framework_extensions.routers import NestedRouterMixin
 
-from blogs.api import BlogsViewSet, BlogPostsAPIView
+
+
+from blogs.api import BlogsViewSet
 from blogs.views import NewBlogView, BlogListView, UserBlogsView
+from posts.api import PostsViewSet
 from posts.views import BlogView
 
-router = DefaultRouter()
-router.register('blogs', BlogsViewSet, base_name='blogs')
+class NestedDefaultRouter(NestedRouterMixin, DefaultRouter):
+    pass
+
+router = NestedDefaultRouter()
+
+blogs_router = router.register('blogs', BlogsViewSet)
+blogs_router.register(
+    'posts', PostsViewSet,
+    base_name='blog-posts',
+    parents_query_lookups=['blogs'])
+
+#router.register('blogs', BlogsViewSet, base_name='blogs')
 
 urlpatterns = [
 

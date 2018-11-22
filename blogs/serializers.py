@@ -20,7 +20,7 @@ class BlogListSerializer(serializers.HyperlinkedModelSerializer):
 
     author = UserSerializer()
 
-    url = serializers.HyperlinkedIdentityField(view_name='blogs-detail', format='html')
+    url = serializers.HyperlinkedIdentityField(view_name='blog-detail', format='html')
 
     class Meta:
 
