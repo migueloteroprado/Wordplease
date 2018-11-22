@@ -8,32 +8,40 @@
 
     <hr>
 
-    <div class="blogs-wrapper">
-        {% for blog in blogs %}
-            <div class="blog">
-                <a href="{% url 'blog' blog.slug %}">
-                    <strong>{{ blog.name}} ({{ blog.author.first_name }} {{ blog.author.last_name }})</strong>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
+    {% if blogs|length > 0 %}
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if blogs.has_previous %}
-                <a href="?page=1">&laquo; First</a>
-                <a href="?page={{ blogs.previous_page_number }}">Previous</a>
-            {% endif %}
+        <div class="blogs-wrapper">
+            {% for blog in blogs %}
+                <div class="blog">
+                    <a href="{% url 'blog' blog.slug %}">
+                        <strong>{{ blog.name}} ({{ blog.author.first_name }} {{ blog.author.last_name }})</strong>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
 
-            <span class="current">
-                Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}.
+        <div class="pagination">
+            <span class="step-links">
+                {% if blogs.has_previous %}
+                    <a href="?page=1">&laquo; First</a>
+                    <a href="?page={{ blogs.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}.
+                </span>
+
+                {% if blogs.has_next %}
+                    <a href="?page={{ blogs.next_page_number }}">Next</a>
+                    <a href="?page={{ blogs.paginator.num_pages }}">Last &raquo;</a>
+                {% endif %}
             </span>
+        </div>
 
-            {% if blogs.has_next %}
-                <a href="?page={{ blogs.next_page_number }}">Next</a>
-                <a href="?page={{ blogs.paginator.num_pages }}">Last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
+    {% else %}
+
+        <h2>No blogs yet...</h2>
+
+    {% endif %}
 
 {%  endblock %}

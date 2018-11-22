@@ -4,36 +4,47 @@
 
 {% block main_body %}
     <hr>
-    <div>
-        {% for post in posts %}
-            <a href="{% url 'post-detail' post.blog.slug post.pk %}" class="post">
-                <strong>{{ post.title }}</strong>
-                <img src="{{ post.image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
-                <p>{{ post.summary }}</p>
-                {% for category in post.categories.all %}
-                    {{ category.name }}&nbsp;
-                {% endfor %}
-                <em>Posted by {{ post.author.first_name }} {{ post.author.last_name }}</em>
-            </a>
-        {% endfor %}
-    </div>
 
-<div class="pagination">
-    <span class="step-links">
-        {% if posts.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ posts.previous_page_number }}">previous</a>
-        {% endif %}
+    {% if posts|length > 0 %}
 
-        <span class="current">
-            Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
-        </span>
+        <div>
+            {% for post in posts %}
+                 <a href="{% url 'post-detail' post.blog.slug post.pk %}" class="post">
+                    <strong>{{ post.title }}</strong>
+                    {%  if post.image %}
+                       <img src="{{ post.image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
+                    {% endif %}
+                    <p>{{ post.summary }}</p>
+                    {% for category in post.categories.all %}
+                        {{ category.name }}&nbsp;
+                    {% endfor %}
+                    <em>Posted by {{ post.author.first_name }} {{ post.author.last_name }}</em>
+                </a>
+            {% endfor %}
+        </div>
 
-        {% if posts.has_next %}
-            <a href="?page={{ posts.next_page_number }}">next</a>
-            <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
+        <div class="pagination">
+            <span class="step-links">
+                {% if posts.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ posts.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+                </span>
+
+                {% if posts.has_next %}
+                    <a href="?page={{ posts.next_page_number }}">next</a>
+                    <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+
+    {% else %}
+
+        <h2>No posts yet...</h2>
+
+    {% endif %}
 
 {% endblock %}

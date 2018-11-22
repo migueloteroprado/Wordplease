@@ -33,10 +33,10 @@ class UserSerializer(UserListSerializer):
         username = slugify(value)
         # validacion si estoy actualizando un usuario
         if self.instance is not None and self.instance.username != username and User.objects.filter(username=username).exists():
-            raise serializers.ValidationError('Username {0} already exists'.format(value))
+            raise serializers.ValidationError("Username '{0}' already exists".format(value))
 
         # validacion si estoy creando un usuario
         if self.instance is None and User.objects.filter(username=username).exists():
-            raise serializers.ValidationError('Username {0} already exists'.format(value))
+            raise serializers.ValidationError("Username '{0}' already exists".format(value))
 
         return username

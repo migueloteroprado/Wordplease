@@ -9,6 +9,7 @@ class UsersViewSet(ModelViewSet):
 
     queryset = User.objects.all()
     permission_classes = [UserPermission]
+    ordering = ['id']
 
     def get_serializer_class(self):
         return UserListSerializer if self.action == 'list' else UserSerializer

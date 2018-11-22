@@ -1,24 +1,13 @@
-from django.contrib.auth.models import User
 from django.utils.text import slugify
 from rest_framework import serializers
 
 from blogs.models import Blog
-
-
-class UserSerializer(serializers.Serializer):
-
-    id = serializers.ReadOnlyField()
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-
-    class Meta:
-        model = User
-        fields = ['id', 'first_name', 'last_name']
+from users.serializers import UserListSerializer
 
 
 class BlogListSerializer(serializers.HyperlinkedModelSerializer):
 
-    author = UserSerializer()
+    author = UserListSerializer()
 
     url = serializers.HyperlinkedIdentityField(view_name='blog-detail', format='html')
 
@@ -36,7 +25,7 @@ class BlogSerializer(BlogListSerializer):
         fields = ['id', 'name', 'description', 'author']
 
     def get_fields(self, *args, **kwargs):
-        fields = super(BlogSerializer, self).get_fields(*args, **kwargs)
+        fields = super(BlogSerializer, self).get_fields()
         view = self.context.get('view', None)
         if view and view.action in ['update', 'create']:
             fields['author'].read_only = True
@@ -46,10 +35,10 @@ class BlogSerializer(BlogListSerializer):
         slug = slugify(value)
         # validacion si estoy actualizando un blog
         if self.instance is not None and self.instance.slug != slug and Blog.objects.filter(slug=slug).exists():
-            raise serializers.ValidationError('Blog {0} already exists'.format(self.instance.name))
+            raise serializers.ValidationError("Blog '{0}' already exists".format(self.instance.name))
 
         # validacion si estoy creando un blog
         if self.instance is None and Blog.objects.filter(slug=slug).exists():
-            raise serializers.ValidationError('Blog {0} already exists'.format(value))
+            raise serializers.ValidationError("Blog '{0}' already exists".format(value))
 
         return value

@@ -1,22 +1,31 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import status
-from rest_framework.generics import ListAPIView
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework_extensions.mixins import NestedViewSetMixin
+from rest_framework.filters import SearchFilter
+from rest_framework.viewsets import ModelViewSet
 
 from blogs.models import Blog
 from posts.models import Post
 from posts.permissions import PostPermission
-from posts.serializers import PostSerializer, PostListSerializer
+from posts.serializers import PostSerializer, PostListSerializer, BlogNotFoundException
+from project.utils import CaseInsensitiveOrderingFilter
 
 
 class PostsViewSet(ModelViewSet):
 
     permission_classes = [PostPermission]
+    filter_backends = [CaseInsensitiveOrderingFilter, SearchFilter]
+    search_fields = ['title', 'summary', 'body']
+    ordering_fields = ['title', 'pub_date']
+    ordering = ['-pub_date']
 
     def get_queryset(self):
-        return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs'))
+        blog_id = self.kwargs.get('parent_lookup_blogs')
+        try:
+            blog = Blog.objects.get(pk=blog_id)
+            user = self.request.user
+            if (user.is_authenticated and user == blog.author) or user.is_superuser:
+                return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs'))
+            return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs'), status=Post.PUBLISHED)
+        except:
+            raise BlogNotFoundException({'detail': 'Blog not found'})
 
     def get_serializer_class(self):
         return PostListSerializer if self.action == 'list' else PostSerializer
@@ -24,9 +33,3 @@ class PostsViewSet(ModelViewSet):
     def perform_create(self, serializer):
         blog = Blog.objects.get(pk=self.kwargs.get('parent_lookup_blogs'))
         serializer.save(author=self.request.user, blog=blog)
-
-
-class PostListAPIView(NestedViewSetMixin, ModelViewSet):
-
-    serializer_class = PostListSerializer
-    queryset = Post.objects.all()

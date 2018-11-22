@@ -8,6 +8,7 @@ from django.views import View
 
 from blogs.forms import BlogForm
 from blogs.models import Blog
+from posts.models import Post
 from project.settings import ITEMS_PER_PAGE
 
 
@@ -38,6 +39,27 @@ class UserBlogsView(View):
         blogs = paginator.get_page(page)
 
         return render(request, 'blogs/blogs.html', {'blogs': blogs})
+
+
+class BlogView(View):
+
+    def get(self, request, slug):
+
+        blog = get_object_or_404(Blog, slug=slug)
+
+        posts_list = Post.objects\
+            .select_related('author')\
+            .filter(status=Post.PUBLISHED, blog=blog.id)\
+            .order_by('-pub_date')
+
+        paginator = Paginator(posts_list, ITEMS_PER_PAGE)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+        context = {
+            'posts': posts,
+            'title': '{0} ({1} {2})'.format(blog.name, blog.author.first_name, blog.author.last_name)
+        }
+        return render(request, 'posts/posts.html', context)
 
 
 class NewBlogView(View):
