@@ -18,6 +18,7 @@ class PostListView(View):
             .select_related('author')\
             .filter(status=Post.PUBLISHED)\
             .order_by('-pub_date')
+
         paginator = Paginator(posts_list, ITEMS_PER_PAGE)
         page = request.GET.get('page')
         posts = paginator.get_page(page)

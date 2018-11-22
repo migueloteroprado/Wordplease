@@ -30,15 +30,24 @@ class PostSerializer(PostListSerializer):
         read_only_fields = ['id', 'author', 'blog']
 
     def validate(self, data):
+        # check if blog exists
+        #try:
+        #    blog_id = self.context.get('view').kwargs.get('parent_lookup_blogs')
+        #    blog = Blog.objects.get(pk=blog_id)
+        #    return data
+        #except:
+        #    raise serializers.ValidationError({'detail': 'Blog not found'})
+
         # check if blog exists and belongs to user
         try:
             blog_id = self.context.get('view').kwargs.get('parent_lookup_blogs')
             blog = Blog.objects.get(pk=blog_id)
         except:
             raise serializers.ValidationError({'detail': 'Blog not found'})
-        if blog.author != self.context.get('request').user:
-            raise serializers.ValidationError({'detail': 'Blog doesn\'t belong to user'})
-        return data
+        user = self.context.get('request').user
+        if blog.author == user or user.is_superuser:
+            return data
+        raise serializers.ValidationError({'detail': 'Blog doesn\'t belong to user'})
 
     def get_fields(self):
         fields = super(PostSerializer, self).get_fields()

@@ -47,10 +47,13 @@ class BlogView(View):
 
         blog = get_object_or_404(Blog, slug=slug)
 
-        posts_list = Post.objects\
-            .select_related('author')\
-            .filter(status=Post.PUBLISHED, blog=blog.id)\
-            .order_by('-pub_date')
+        # if user is the blog propietary show all posts, otherwise show only published
+        if request.user == blog.author:
+            posts_list = Post.objects.select_related('author')\
+                .filter(blog=blog.id).order_by('-pub_date')
+        else:
+            posts_list = Post.objects.select_related('author')\
+                .filter(status=Post.PUBLISHED, blog=blog.id).order_by('-pub_date')
 
         paginator = Paginator(posts_list, ITEMS_PER_PAGE)
         page = request.GET.get('page')
