@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block head_title %} New Post {% endblock %}
 
 {% block main_title %} New Post {% endblock %}
@@ -7,7 +9,9 @@
 {% block main_body %}
     <form method="post" novalidate enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create post</button>
+
+        {{ form|crispy }}
+
+        <button type="submit" class="btn btn-primary">Create post</button>
     </form>
 {% endblock %}

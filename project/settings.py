@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'posts',
     'categories',
     'rest_framework',
-    'django_filters'
+    'django_filters',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -189,4 +190,6 @@ REST_FRAMEWORK = {
         'rest_framework_csv.renderers.CSVRenderer'
     ),
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

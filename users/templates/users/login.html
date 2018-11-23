@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block head_title %} Login {% endblock %}
 
 {% block main_title %} Login {% endblock %}
@@ -9,9 +11,9 @@
     <form method="POST" novalidate>
         {%  csrf_token %}
 
-        {{ form.as_p }}
+        {{ form|crispy }}
 
-        <button type="submit">Login</button>
+        <button type="submit" class="btn btn-primary">Login</button>
 
     </form>
 

@@ -10,3 +10,9 @@ body {
     height: 100px;
     width: auto;
 }
+
+.user-icon {
+    font-size: 1.4rem;
+    position: relative;
+    top: 2px;
+}
