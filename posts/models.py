@@ -1,6 +1,6 @@
-import datetime
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 from blogs.models import Blog
 from categories.models import Category
@@ -17,8 +17,8 @@ class Post(models.Model):
     video = models.URLField(blank=True, null=True)
     categories = models.ManyToManyField(Category)
     creation_date = models.DateTimeField(auto_now_add=True)
-    pub_date = models.DateTimeField(default=datetime.datetime.now)
+    pub_date = models.DateTimeField(default=timezone.now())
     last_modification = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return '{0} ({1})'.format(self.title)
+        return self.title

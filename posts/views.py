@@ -1,8 +1,8 @@
-import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import DetailView
@@ -15,7 +15,7 @@ from project.settings import ITEMS_PER_PAGE
 class PostListView(View):
 
     def get(self, request):
-        now = datetime.datetime.now()
+        now = timezone.now()
         posts_list = Post.objects.prefetch_related('categories')\
             .select_related('author')\
             .filter(pub_date__lte=now)\

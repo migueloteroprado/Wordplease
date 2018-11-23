@@ -42,5 +42,5 @@ class PostAdmin(admin.ModelAdmin):
     ]
 
 #    def save_model(self, request, obj, form, change):
-#        obj.pub_date = datetime.datetime.now() if obj.status == Post.PUBLISHED else None
+#        obj.pub_date = timezone.now() if obj.status == Post.PUBLISHED else None
 #        super(PostAdmin, self).save_model(request, obj, form, change)

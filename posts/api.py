@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.exceptions import APIException
 from rest_framework.filters import SearchFilter
@@ -32,7 +32,7 @@ class PostsViewSet(ModelViewSet):
             user = self.request.user
             if (user.is_authenticated and user == blog.author) or user.is_superuser:
                 return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs')).select_related('author').prefetch_related('categories')
-            now = datetime.datetime.now()
+            now = timezone.now()
             return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs'), pub_date__lte=now).select_related('author').prefetch_related('categories')
         except:
             raise BlogNotFoundException({'detail': 'Blog not found'})
@@ -41,12 +41,12 @@ class PostsViewSet(ModelViewSet):
         return PostListSerializer if self.action == 'list' else PostSerializer
 
     def perform_create(self, serializer):
-#        pub_date = datetime.datetime.now() if serializer.validated_data.get('status') == Post.PUBLISHED else None
+#        pub_date = timezone.now() if serializer.validated_data.get('status') == Post.PUBLISHED else None
         blog = Blog.objects.get(pk=self.kwargs.get('parent_lookup_blogs'))
         # set post blog and author. The author is the blog owner
         serializer.save(author=blog.author, blog=blog, pub_date=pub_date)
 
 #    def perform_update(self, serializer):
-#        pub_date = datetime.datetime.now() if serializer.validated_data.get('status') == Post.PUBLISHED else None
+#        pub_date = timezone.now() if serializer.validated_data.get('status') == Post.PUBLISHED else None
 #        serializer.save(pub_date=pub_date)
 
