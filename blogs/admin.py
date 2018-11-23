@@ -6,7 +6,8 @@ from blogs.models import Blog
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
 
-    readonly_fields = ['slug']
+    fields = ['author', 'name', 'description']
+    readonly_fields = ['id']
     list_display = ['name', 'description', 'author_fullname']
     search_fields = ['name', 'description']
     ordering = ['author']

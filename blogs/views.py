@@ -8,6 +8,7 @@ from django.views import View
 
 from blogs.forms import BlogForm
 from blogs.models import Blog
+from categories.models import Category
 from posts.models import Post
 from project.settings import ITEMS_PER_PAGE
 
@@ -47,19 +48,31 @@ class BlogView(View):
 
         blog = get_object_or_404(Blog, slug=slug)
 
+        # get categories passed in form for filter
+        cat_request = request.GET.get('categories', '0')
+        categories_filtered = Category.objects.all() if cat_request == '0' else Category.objects.filter(pk=cat_request)
+        cats = list(cat.id for cat in categories_filtered)
+
         # if user is the blog propietary show all posts, otherwise show only published
         if request.user == blog.author:
             posts_list = Post.objects.select_related('author')\
-                .filter(blog=blog.id).order_by('-pub_date')
+                .prefetch_related('categories')\
+                .filter(blog=blog.id, categories__in=cats).distinct()\
+                .order_by('-pub_date')
         else:
-            posts_list = Post.objects.select_related('author')\
-                .filter(status=Post.PUBLISHED, blog=blog.id).order_by('-pub_date')
+            posts_list = Post.objects.select_related('author') \
+                .prefetch_related('categories')\
+                .filter(status=Post.PUBLISHED, blog=blog.id, categories__in=cats).distinct()\
+                .order_by('-pub_date')
 
         paginator = Paginator(posts_list, ITEMS_PER_PAGE)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
+        categories = Category.objects.all()
         context = {
             'posts': posts,
+            'categories': categories,
+            'cat_selected': cats[0] if cats.__len__() == 1 else None,
             'title': '{0} ({1} {2})'.format(blog.name, blog.author.first_name, blog.author.last_name)
         }
         return render(request, 'posts/posts.html', context)

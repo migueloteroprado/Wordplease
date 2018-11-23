@@ -24,9 +24,9 @@ class Post(models.Model):
     video = models.URLField(blank=True, null=True)
     categories = models.ManyToManyField(Category)
     status = models.CharField(max_length=3, choices=STATUS, default=PUBLISHED)
-    pub_date = models.DateTimeField(auto_now_add=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    pub_date = models.DateTimeField(blank=True, null=True)
     last_modification = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return '{0} ({1})'.format(self.title, self.get_status_display())
-

@@ -7,6 +7,7 @@ from categories.serializers import CategoryListSerializer
 from posts.models import Post
 
 
+# return 404 instead 500 if blog doesn't exist
 class BlogNotFoundException(APIException):
 
     status_code = 404
@@ -14,30 +15,29 @@ class BlogNotFoundException(APIException):
 
 class PostListSerializer(serializers.ModelSerializer):
 
+    author = serializers.SerializerMethodField()
+
     class Meta:
 
         model = Post
-        fields = ['id', 'title', 'image', 'summary', 'pub_date']
+        fields = ['id', 'title', 'image', 'summary', 'pub_date', 'author']
+
+    def get_author(self, obj):
+        return '{0} {1}'.format(obj.author.first_name, obj.author.last_name)
 
 
 class PostSerializer(PostListSerializer):
 
-    blog = BlogListSerializer(read_only=True)
+    #blog = BlogListSerializer(read_only=True)
+    blog = serializers.SerializerMethodField()
 
     class Meta(PostListSerializer.Meta):
 
         fields = '__all__'
+        #fields = ['id', 'title', 'image', 'summary', 'body', 'status', 'creation_date', 'pub_date', 'last_modification_date', 'author']
         read_only_fields = ['id', 'author', 'blog']
 
     def validate(self, data):
-        # check if blog exists
-        #try:
-        #    blog_id = self.context.get('view').kwargs.get('parent_lookup_blogs')
-        #    blog = Blog.objects.get(pk=blog_id)
-        #    return data
-        #except:
-        #    raise serializers.ValidationError({'detail': 'Blog not found'})
-
         # check if blog exists and belongs to user
         try:
             blog_id = self.context.get('view').kwargs.get('parent_lookup_blogs')
@@ -55,3 +55,5 @@ class PostSerializer(PostListSerializer):
             fields['categories'] = CategoryListSerializer(read_only=True, many=True)
         return fields
 
+    def get_blog(self, obj):
+        return {'id': obj.blog.id, 'name': obj.blog.name}

@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.text import slugify
 
 from blogs.models import Blog
 
@@ -11,7 +12,7 @@ class BlogForm(forms.ModelForm):
 
     def clean_name(self):
         name = self.cleaned_data.get('name', '')
-        if Blog.objects.filter(name=name).exists():
+        slug = slugify(name)
+        if Blog.objects.filter(slug=slug).exists():
             raise forms.ValidationError('Blog {0} already exists'.format(name))
         return name
-

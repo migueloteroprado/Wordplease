@@ -29,6 +29,7 @@ class UserSerializer(UserListSerializer):
         instance.save()
         return instance
 
+
     def validate_username(self, value):
         username = slugify(value)
         # validacion si estoy actualizando un usuario

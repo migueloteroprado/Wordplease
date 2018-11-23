@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from django.conf.locale.es import formats as formats_es
+from django.conf.locale.en import formats as formats_en
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,7 +45,8 @@ INSTALLED_APPS = [
     'blogs',
     'posts',
     'categories',
-    'rest_framework'
+    'rest_framework',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -119,6 +123,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+formats_es.DATETIME_FORMAT = "d/m/Y H:i"
+formats_en.DATETIME_FORMAT = "Y-m-d H:i"
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -129,9 +136,10 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/uploads/'
 
+# Pagination for lists
 ITEMS_PER_PAGE = 10
 
-"""
+
 LOGGING = {
     'version': 1,
     'filters': {
@@ -153,7 +161,7 @@ LOGGING = {
         }
     }
 }
-"""
+
 
 # Login URL
 LOGIN_URL = 'login'
@@ -163,7 +171,22 @@ LOGIN_URL = 'login'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'NON_FIELD_ERRORS_KEY': 'detail'
+    'PAGE_SIZE': 5,
+    'NON_FIELD_ERRORS_KEY': 'detail',
+    'DEFAULT_PARSER_CLASSES'
+    '': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework_xml.parsers.XMLParser',
+        'rest_framework_yaml.parsers.YAMLParser',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework_xml.renderers.XMLRenderer',
+        'rest_framework_yaml.renderers.YAMLRenderer',
+        'rest_framework_csv.renderers.CSVRenderer'
+    ),
 }
 

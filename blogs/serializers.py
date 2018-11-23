@@ -2,20 +2,24 @@ from django.utils.text import slugify
 from rest_framework import serializers
 
 from blogs.models import Blog
+from posts.models import Post
 from users.serializers import UserListSerializer
 
 
 class BlogListSerializer(serializers.HyperlinkedModelSerializer):
 
     author = UserListSerializer()
-
+    post_count = serializers.SerializerMethodField()
     url = serializers.HyperlinkedIdentityField(view_name='blog-detail', format='html')
 
     class Meta:
 
         model = Blog
-        fields = ['id', 'url', 'name', 'author']
+        fields = ['id', 'url', 'name', 'author', 'post_count']
         read_only_fields = ['author', 'slug']
+
+    def get_post_count(self, obj):
+        return Post.objects.select_related('blogs').prefetch_related('categories').filter(blog=obj).count()
 
 
 class BlogSerializer(BlogListSerializer):
@@ -27,7 +31,7 @@ class BlogSerializer(BlogListSerializer):
     def get_fields(self, *args, **kwargs):
         fields = super(BlogSerializer, self).get_fields()
         view = self.context.get('view', None)
-        if view and view.action in ['update', 'create']:
+        if view and view.action in ['update', 'create', 'partial_update']:
             fields['author'].read_only = True
         return fields
 
