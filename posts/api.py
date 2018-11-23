@@ -23,7 +23,7 @@ class PostsViewSet(ModelViewSet):
     search_fields = ['title', 'summary', 'body']
     ordering_fields = ['title', 'pub_date']
     ordering = ['-pub_date']
-    filter_fields = ['status', 'categories']
+    filter_fields = ['categories'] #'status', 'categories']
 
     def get_queryset(self):
         blog_id = self.kwargs.get('parent_lookup_blogs')
@@ -32,7 +32,8 @@ class PostsViewSet(ModelViewSet):
             user = self.request.user
             if (user.is_authenticated and user == blog.author) or user.is_superuser:
                 return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs')).select_related('author').prefetch_related('categories')
-            return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs'), status=Post.PUBLISHED).select_related('author').prefetch_related('categories')
+            now = datetime.datetime.now()
+            return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs'), pub_date__lte=now).select_related('author').prefetch_related('categories')
         except:
             raise BlogNotFoundException({'detail': 'Blog not found'})
 
@@ -40,12 +41,12 @@ class PostsViewSet(ModelViewSet):
         return PostListSerializer if self.action == 'list' else PostSerializer
 
     def perform_create(self, serializer):
-        pub_date = datetime.datetime.now() if serializer.validated_data.get('status') == Post.PUBLISHED else None
+#        pub_date = datetime.datetime.now() if serializer.validated_data.get('status') == Post.PUBLISHED else None
         blog = Blog.objects.get(pk=self.kwargs.get('parent_lookup_blogs'))
         # set post blog and author. The author is the blog owner
         serializer.save(author=blog.author, blog=blog, pub_date=pub_date)
 
-    def perform_update(self, serializer):
-        pub_date = datetime.datetime.now() if serializer.validated_data.get('status') == Post.PUBLISHED else None
-        serializer.save(pub_date=pub_date)
+#    def perform_update(self, serializer):
+#        pub_date = datetime.datetime.now() if serializer.validated_data.get('status') == Post.PUBLISHED else None
+#        serializer.save(pub_date=pub_date)
 

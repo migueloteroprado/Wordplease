@@ -14,8 +14,6 @@
     <p>
         <strong>Description: {{ post.description }}</strong>
         <br>
-        <strong>Status: {{ post.get_status_display }}</strong>
-        <br>
         <strong>Pub date: {{ post.pub_date|date:"d/m/Y H:i" }}</strong>
         <br>
         <strong>Author: {{ post.author.first_name }} {{ post.author.last_name }}</strong>

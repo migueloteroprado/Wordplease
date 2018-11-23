@@ -1,3 +1,4 @@
+import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -60,9 +61,10 @@ class BlogView(View):
                 .filter(blog=blog.id, categories__in=cats).distinct()\
                 .order_by('-pub_date')
         else:
+            now = datetime.datetime.now()
             posts_list = Post.objects.select_related('author') \
                 .prefetch_related('categories')\
-                .filter(status=Post.PUBLISHED, blog=blog.id, categories__in=cats).distinct()\
+                .filter(pub_date__lte<=now, blog=blog.id, categories__in=cats).distinct()\
                 .order_by('-pub_date')
 
         paginator = Paginator(posts_list, ITEMS_PER_PAGE)

@@ -12,10 +12,10 @@ class PostAdmin(admin.ModelAdmin):
     #readonly_fields = ['author', 'blog']
     list_display = ['title', 'image_tag', 'author_fullname', 'pub_date']
     search_fields = ['title', 'summary', 'body']
-    list_filter = ['categories', 'status']
-    ordering = ['author']
+    list_filter = ['categories']
+    ordering = ['author', 'pub_date']
     #readonly_fields = ['author']
-    readonly_fields = ['pub_date', 'last_modification']
+    readonly_fields = ['last_modification']
 
     def author_fullname(self, obj):
         return '{0} {1}'.format(obj.author.first_name, obj.author.last_name)
@@ -31,7 +31,7 @@ class PostAdmin(admin.ModelAdmin):
 
     fieldsets = [
         [None, {
-            'fields': ['title', 'author', 'blog', 'image', 'summary', 'status']
+            'fields': ['title', 'author', 'blog', 'image', 'summary']
         }],
         ['Detail', {
             'fields': ['body', 'categories'],
@@ -41,6 +41,6 @@ class PostAdmin(admin.ModelAdmin):
         }]
     ]
 
-    def save_model(self, request, obj, form, change):
-        obj.pub_date = datetime.datetime.now() if obj.status == Post.PUBLISHED else None
-        super(PostAdmin, self).save_model(request, obj, form, change)
+#    def save_model(self, request, obj, form, change):
+#        obj.pub_date = datetime.datetime.now() if obj.status == Post.PUBLISHED else None
+#        super(PostAdmin, self).save_model(request, obj, form, change)

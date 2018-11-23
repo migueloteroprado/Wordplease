@@ -1,3 +1,4 @@
+import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -14,9 +15,10 @@ from project.settings import ITEMS_PER_PAGE
 class PostListView(View):
 
     def get(self, request):
+        now = datetime.datetime.now()
         posts_list = Post.objects.prefetch_related('categories')\
             .select_related('author')\
-            .filter(status=Post.PUBLISHED)\
+            .filter(pub_date__lte=now)\
             .order_by('-pub_date')
 
         paginator = Paginator(posts_list, ITEMS_PER_PAGE)
