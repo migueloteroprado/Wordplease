@@ -26,7 +26,7 @@ class PostListView(View):
         posts = paginator.get_page(page)
         context = {
             'posts': posts,
-            'title': 'Wordplease'
+            'title': 'Latest Posts'
         }
         return render(request, 'posts/posts.html', context)
 

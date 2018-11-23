@@ -9,14 +9,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <script type="text/javascript" src="{% static 'javascript/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'javascript/bootstrap.min.js' %}"></script>
-    <style>
-        .message.error { color: red; }
-        .message.success { color: green; }
-    </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="{% url 'home' %}">
           <i class="fas fa-book-reader logo"></i>&nbsp;
           Wordplease
@@ -68,28 +64,35 @@
         </div>
     </nav>
 
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <div class="alert alert-success alert-dismissible fade show popup-message" role="alert">
-            {% elif message.tags == 'error' %}
-                <div class="alert alert-danger alert-dismissible fade show popup-message" role="alert">
-            {% endif %}
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
-    {% endif %}
 
-    <main class="container">
-        <h2>{% block main_title %} {% endblock %}</h2>
-        {% block main_body %} {% endblock %}
-    </main>
 
-    <footer>
-        Wordplease. All rights reserved &copy; {% now "Y" %}
+    <div class="container-wrapper">
+
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="alert alert-success alert-dismissible fade show popup-message" role="alert">
+                {% elif message.tags == 'error' %}
+                    <div class="alert alert-danger alert-dismissible fade show popup-message" role="alert">
+                {% endif %}
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <main class="container">
+            <h3>{% block main_title %} {% endblock %}</h3>
+            {% block main_body %} {% endblock %}
+        </main>
+    </div>
+
+    <footer class="navbar navbar-dark bg-dark fixed-bottom">
+        <span class="navbar-brand text-white">
+            Wordplease. All rights reserved &copy; {% now "Y" %}
+        </span>
     </footer>
 
 </body>

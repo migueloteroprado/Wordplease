@@ -25,7 +25,7 @@ class BlogListView(View):
         page = request.GET.get('page')
         blogs = paginator.get_page(page)
 
-        return render(request, 'blogs/blogs.html', {'blogs': blogs})
+        return render(request, 'blogs/blogs.html', {'blogs': blogs, 'title': 'Blog List'})
 
 
 class UserBlogsView(View):
@@ -40,7 +40,10 @@ class UserBlogsView(View):
         page = request.GET.get('page')
         blogs = paginator.get_page(page)
 
-        return render(request, 'blogs/blogs.html', {'blogs': blogs})
+        return render(request, 'blogs/blogs.html', {
+            'blogs': blogs,
+            'title': 'Blog List ({0} {1})'.format(user.first_name, user.last_name)
+        })
 
 
 class BlogView(View):
@@ -64,7 +67,7 @@ class BlogView(View):
             now = datetime.datetime.now()
             posts_list = Post.objects.select_related('author') \
                 .prefetch_related('categories')\
-                .filter(pub_date__lte<=now, blog=blog.id, categories__in=cats).distinct()\
+                .filter(pub_date__lte=now, blog=blog.id, categories__in=cats).distinct()\
                 .order_by('-pub_date')
 
         paginator = Paginator(posts_list, ITEMS_PER_PAGE)
@@ -75,7 +78,7 @@ class BlogView(View):
             'posts': posts,
             'categories': categories,
             'cat_selected': cats[0] if cats.__len__() == 1 else None,
-            'title': '{0} ({1} {2})'.format(blog.name, blog.author.first_name, blog.author.last_name)
+            'title': 'Post List - {0} ({1} {2})'.format(blog.name, blog.author.first_name, blog.author.last_name)
         }
         return render(request, 'posts/posts.html', context)
 

@@ -59,10 +59,14 @@ class SignupView(View):
             new_user.set_password(form.cleaned_data.get('password'))
             new_user.save()
 
-            messages.success(request, 'User signed up successfully!')
-            form = SignupForm()
 
-        return render(request, 'users/signup.html', {'form': form })
+            django_login(request, new_user)
+            welcome_url = request.GET.get('next', 'home')
+            messages.success(request, 'User signed up successfully!')
+            return redirect(welcome_url)
+            #form = SignupForm()
+
+        return render(request, 'users/signup.html', {'form': form})
 
 class UsersView(View):
 
