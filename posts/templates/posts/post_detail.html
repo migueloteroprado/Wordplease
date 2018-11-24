@@ -11,6 +11,12 @@
                 {%  if post.image %}
                     <img src="{{ post.image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
                 {% endif %}
+
+                {% if post.video %}
+                    <div class="post-video-container">
+                        <iframe class="post-video" width="100%" height="auto" src="{{ post.video }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                {% endif %}
                 <div class="post-detail">
                     <em>{{ post.summary }}</em>
                 </div>

@@ -28,17 +28,15 @@ class PostListSerializer(serializers.ModelSerializer):
 
 class PostSerializer(PostListSerializer):
 
-    #blog = BlogListSerializer(read_only=True)
     blog = serializers.SerializerMethodField()
 
     class Meta(PostListSerializer.Meta):
 
         fields = '__all__'
-        #fields = ['id', 'title', 'image', 'summary', 'body', 'status', 'creation_date', 'pub_date', 'last_modification_date', 'author']
         read_only_fields = ['id', 'author', 'blog']
 
     def validate(self, data):
-        # check if blog exists and belongs to user
+        # check if blog exists and belongs to authenticated user
         try:
             blog_id = self.context.get('view').kwargs.get('parent_lookup_blogs')
             blog = Blog.objects.get(pk=blog_id)
@@ -47,7 +45,7 @@ class PostSerializer(PostListSerializer):
         user = self.context.get('request').user
         if blog.author == user or user.is_superuser:
             return data
-        raise serializers.ValidationError({'detail': 'Blog doesn\'t belong to user'})
+        raise serializers.ValidationError({'detail': 'Blog doesn\'t belong to authenticated user'})
 
     def get_fields(self):
         fields = super(PostSerializer, self).get_fields()

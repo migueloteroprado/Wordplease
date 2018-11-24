@@ -1,15 +1,11 @@
 from django.contrib.auth.models import User
-from rest_framework.viewsets import mixins, GenericViewSet
+from rest_framework.viewsets import mixins, GenericViewSet, ModelViewSet
 
 from users.permissions import UserPermission
 from users.serializers import UserSerializer, UserListSerializer
 
 
-class UsersViewSet(mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin,
-                   mixins.UpdateModelMixin,
-                   mixins.DestroyModelMixin,
-                   GenericViewSet):
+class UsersViewSet(ModelViewSet):
 
     queryset = User.objects.all()
     permission_classes = [UserPermission]

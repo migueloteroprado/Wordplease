@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'blogs',
     'posts',
     'categories',
+    'image_upload',
     'rest_framework',
     'django_filters',
     'crispy_forms'

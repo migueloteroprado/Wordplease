@@ -94,6 +94,25 @@ input.datetimeinput {
     width: 100%;
     height: auto;
 }
+
+.post-video-container {
+    position: relative;
+    clear: both;
+    height: 0;
+    padding-bottom: 56%;
+    margin: 0 5px 20px 0;
+    transition: 0.2s linear;
+}
+
+.post-video {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    padding: 2px;
+}
+
 .post .post-categories {
     display: flex;
     flex-direction: column;

@@ -13,11 +13,11 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     summary = models.CharField(max_length=200)
     body = models.TextField()
-    image = models.FileField(blank=True, null=True)
+    image = models.ImageField(blank=True, null=True)
     video = models.URLField(blank=True, null=True)
     categories = models.ManyToManyField(Category)
     creation_date = models.DateTimeField(auto_now_add=True)
-    pub_date = models.DateTimeField(default=timezone.now())
+    pub_date = models.DateTimeField()
     last_modification = models.DateTimeField(auto_now=True)
 
     def __str__(self):
