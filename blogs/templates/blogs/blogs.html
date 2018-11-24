@@ -6,16 +6,25 @@
 
 {% block main_body %}
 
-    <hr>
-
     {% if blogs|length > 0 %}
 
         <div class="blogs-wrapper">
             {% for blog in blogs %}
-                <div class="blog">
-                    <a href="{% url 'blog' blog.slug %}">
-                        <strong>{{ blog.name}} ({{ blog.author.first_name }} {{ blog.author.last_name }})</strong>
-                    </a>
+                <div class="blog card">
+                    <div class="card-body">
+                        <div>
+                            <h5>
+                                <a href="{% url 'blog' blog.slug %}">{{ blog.name}}</a>
+                            </h5>
+                        </div>
+                        <hr>
+                        <div class="blog-description">
+                            {{ blog.description }}
+                        </div>
+                        <div class="blog-author">
+                             Created by {{ blog.author.first_name }} {{ blog.author.last_name }}
+                        </div>
+                    </div>
                 </div>
             {% endfor %}
         </div>
@@ -58,7 +67,11 @@
 
     {% else %}
 
-        <h4>No blogs yet...</h4>
+        <div class="card">
+            <div class="card-body">
+                <h5>No blogs yet...</h5>
+            </div>
+        </div>
 
     {% endif %}
 

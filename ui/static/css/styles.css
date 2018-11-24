@@ -1,5 +1,13 @@
+:root {
+    --primary-color: cyan;
+}
+
 body {
-    background-color: #eee;
+    font-family: ubuntu, sans-serif;
+}
+
+* {
+    outline: none !important;
 }
 
 hr {
@@ -18,10 +26,26 @@ hr {
     padding: 0;
 }
 
+/* NavBar */
+
+.navbar {
+    box-shadow: 2px 2px 5px #999;
+}
+.navbar-brand {
+    color: var(--primary-color) !important;
+    text-shadow: 1px 1px 1px gray;
+}
+.navbar-dark .navbar-nav .nav-link {
+    color: #f0f0f0 !important;
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
 /* Main container */
 
 .container-wrapper {
-    background-color: #f5f5f5;
+    background-color: #f9f9f9;
     position: fixed;
     top: 60px;
     left: 0;
@@ -34,7 +58,32 @@ main.container {
     margin: 15px auto;
 }
 
+main> h4 {
+    position: relative;
+    width: 100%;
+    font-size: 1.25rem;
+    font-weight: normal;
+    text-shadow: 1px 1px 1px gray;
+    color: var(--primary-color);
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 12px 10px 12px 17px;
+    box-shadow: 2px 2px 5px #999;
+    margin-bottom: 20px;
+}
+
+h5 {
+    margin-bottom: 0;
+}
+
 /* Footer */
+
+footer .navbar-brand {
+    color: #f0f0f0 !important;
+    font-size: 1rem;
+    font-weight: normal;
+    text-shadow: none;
+}
 
 footer span {
     width: 100%;
@@ -53,46 +102,77 @@ select {
 }
 */
 
+.login-form-wrapper,
+.signup-form-wrapper {
+    max-width: 400px;
+    margin: 0 auto;
+}
+.signup-form-wrapper {
+    max-width: 700px;
+}
+
 #select-categories {
     width: 100%;
 }
 
+input, select, textarea {
+    background-color: #fafafa !important;
+}
 input.datetimeinput {
     width:200px;
 }
 
+input[name="username"],
+input[name="password"],
+input[name="password_confirmation"] {
+    max-width: 300px;
+}
+input[name="first_name"],
+input[name="last_name"] {
+    max-width: 500px;
+}
+
+
 /* Posts */
 
-.post {
-    display: flex;
-    margin-bottom: 15px;
+.card {
+    border: 1px solid #bbb !important;
     box-shadow: 2px 2px 5px #999;
 }
-.post a {
-    box-shadow: none;
+.card-header {
+    background-color: #efefef !important;
 }
 
-.post-content-wrapper.detail {
+.post, .user, .blog {
     display: flex;
-    flex-direction: column;
+    margin-bottom: 15px;
+}
+.filters {
+    margin-bottom: 20px;
 }
 
 .post .post-detail {
     position: relative;
     width: 100%;
 }
+
+.post-content-wrapper.list {
+    display: flex;
+    flex-direction: row;
+}
 .post-content-wrapper.list img {
     height: auto;
     max-width: 150px;
-    float: left;
     margin-right: 20px;
     border-radius: 5px;
     box-shadow: 2px 2px 5px #4e555b;
 }
 .post-content-wrapper.detail img {
-    max-width: 100%;
     width: 100%;
     height: auto;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #4e555b;
+    margin-right: 20px;
 }
 
 .post-video-container {
@@ -115,20 +195,46 @@ input.datetimeinput {
 
 .post .post-categories {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     font-size: 0.8rem;
+}
+
+.post .footer-label {
+    color: green;
+    font-size: 0.8rem;
+    margin-right: 5px;
 }
 .post .post-footer {
     display: flex;
     justify-content: space-between;
 }
+.post-footer .footer-info {
+    display: flex;
+    flex-direction: column;
+}
 .post-author {
-    font-style: italic;
     font-size: 0.8rem;
 }
 .post-pub-date {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
 }
-.clear {
-    clear: both;
+
+
+/* users and blogs*/
+.user.card, blog.carg {
+    margin-bottom: 10px;
+}
+.user.card .card-body,
+.blog.card .card-body {
+    padding: 15px;
+}
+.blog hr {
+    margin: 5px 0;
+}
+.blog .blog-author {
+    font-size: 0.7rem;
+    font-style: italic;
+}
+.blog .blog-description {
+    font-size: 0.8rem;
 }

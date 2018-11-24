@@ -9,12 +9,17 @@
 {% block main_body %}
 
     <form method="POST" novalidate>
-        {%  csrf_token %}
+            {%  csrf_token %}
 
-        {{ form|crispy }}
-
-        <button type="submit" class="btn btn-primary">Login</button>
-
-    </form>
+            <div class="card">
+                <div class="card-body">
+                    <div class="login-form-wrapper">
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
 {%  endblock %}

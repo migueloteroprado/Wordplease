@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.db.models import Count
 from django.shortcuts import render, redirect
 from django.views import View
 

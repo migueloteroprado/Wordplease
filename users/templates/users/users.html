@@ -6,14 +6,14 @@
 
 {% block main_body %}
 
-    <hr>
-
-    <div class="blogs-wrapper">
+    <div class="users-wrapper">
         {% for user in users %}
-            <div class="user">
-                <a href="{%  url 'user-blogs' user.username %}" class="blog">
-                    <strong>{{ user.first_name }} {{ user.first_name }} ({{ user.username }})</strong>
-                </a>
+            <div class="user card">
+                <div class="card-body">
+                    <a href="{%  url 'user-blogs' user.username %}">
+                        <strong>{{ user.first_name }} {{ user.last_name }} ({{ user.username }})</strong>
+                    </a>
+                </div>
             </div>
         {% endfor %}
     </div>

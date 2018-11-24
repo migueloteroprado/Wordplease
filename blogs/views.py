@@ -42,7 +42,7 @@ class UserBlogsView(View):
 
         return render(request, 'blogs/blogs.html', {
             'blogs': blogs,
-            'title': 'Blog List ({0} {1})'.format(user.first_name, user.last_name)
+            'title': 'Blog List - {0} {1}'.format(user.first_name, user.last_name)
         })
 
 
@@ -78,7 +78,7 @@ class BlogView(View):
             'posts': posts,
             'categories': categories,
             'cat_selected': cats[0] if cats.__len__() == 1 else None,
-            'title': 'Post List - {0} ({1} {2})'.format(blog.name, blog.author.first_name, blog.author.last_name)
+            'title': '{0}'.format(blog.name)
         }
         return render(request, 'posts/posts.html', context)
 

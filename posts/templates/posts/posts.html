@@ -3,28 +3,37 @@
 {% block main_title %} {{ title }} {% endblock %}
 
 {% block main_body %}
-    <hr xmlns="http://www.w3.org/1999/html">
 
     {% if categories %}
-        <form class="form-inline">
-            <div class="form-group row">
-                <label class="col-3 col-form-label" for="categories">Category</label>
-                <div class="col-7">
-                    <select name="categories" id="select-categories" class="form-control">
-                        <option value="0" {% if cat_selected is None %} selected {% endif %}>ALL</option>
-                        {% for category in categories %}
-                            <option value="{{ category.pk }}"
-                                {% if category.pk == cat_selected %} selected {% endif %}
-                            >{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-2">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                </div>
+        <div class="card filters">
+            <div class="card-header">
+                <h5>Filters</h5>
             </div>
-        </form>
-        <hr>
+            <div class="card-body">
+
+                <form class="form-inline">
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label" for="categories">Category</label>
+                        <div class="col-7">
+                            <select name="categories" id="select-categories" class="form-control">
+                                <option value="0" {% if cat_selected is None %} selected {% endif %}>ALL</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.pk }}"
+                                        {% if category.pk == cat_selected %} selected {% endif %}
+                                    >{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <h4 class="bg-dark">Post List</h4>
+
     {% endif %}
 
     {% if posts|length > 0 %}
@@ -32,11 +41,12 @@
         <div>
             {% for post in posts %}
                 <div class="post card">
-                    <div class="card-body">
-                        <h5><a href="{% url 'post-detail' post.blog.slug post.pk %}" class="post">
-                            <strong>{{ post.title }}</strong>
+                    <div class="card-header">
+                        <h5><a href="{% url 'post-detail' post.blog.slug post.pk %}">
+                            {{ post.title }}
                         </a></h5>
-                        <hr>
+                    </div>
+                    <div class="card-body">
                         <div class="post-content-wrapper list">
                             {%  if post.image %}
                                 <a href="{% url 'post-detail' post.blog.slug post.pk %}">
@@ -50,8 +60,9 @@
                         <div class="clear"></div>
                         <hr>
                         <div class="post-footer">
-                            <span class="post-author">Posted by {{ post.author.first_name }} {{ post.author.last_name }}</span>
-                            <br>
+                            <div>
+                                <span class="footer-label">Posted by: </span><span class="post-author">{{ post.author.first_name }} {{ post.author.last_name }}</span>
+                            </div>
                             <span class="post-pub-date">{{ post.pub_date|date:"d/m/Y H:i" }}</span>
                         </div>
                     </div>
@@ -94,9 +105,11 @@
         </nav>
 
     {% else %}
-
-        <h4>No posts yet...</h4>
-
+        <div class="card">
+            <div class="card-body">
+                <h5>No posts yet...</h5>
+            </div>
+        </div>
     {% endif %}
 
 {% endblock %}

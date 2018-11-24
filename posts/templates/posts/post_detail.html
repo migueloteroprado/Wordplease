@@ -5,37 +5,46 @@
 {% block main_title %} {{ post.title }} {% endblock %}
 
 {% block main_body %}
+
     <div class="post card">
         <div class="card-body">
             <div class="post-content-wrapper detail">
+                <div class="post-detail">
+                    <em>{{ post.summary }}</em>
+                </div>
+                <hr>
                 {%  if post.image %}
-                    <img src="{{ post.image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
+                    <div>
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
+                    </div>
+                    <hr>
                 {% endif %}
-
                 {% if post.video %}
                     <div class="post-video-container">
                         <iframe class="post-video" width="100%" height="auto" src="{{ post.video }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
+                    <hr>
                 {% endif %}
-                <div class="post-detail">
-                    <em>{{ post.summary }}</em>
+                <div class=post-body">
+                    {{ post.body }}
                 </div>
-            </div>
-            <div class="clear"></div>
-            <hr>
-            <div class=post-body">
-                {{ post.body }}
             </div>
             <hr>
             <div class="post-footer">
-                <span class="post-author">Posted by {{ post.author.first_name }} {{ post.author.last_name }}</span>
+                <div class="footer-info">
+                    <div>
+                        <span class="footer-label">Posted by:</span><span class="post-author"> {{ post.author.first_name }} {{ post.author.last_name }}</span>
+                    </div>
+                    <span class="post-pub-date">{{ post.pub_date|date:"d/m/Y H:i" }}</span>
+                </div>
                 <div class="post-categories">
-                    <span>Categories:</span>
+                    <span class="footer-label">Categories:</span>
                     {% for category in post.categories.all %}
-                        <span class="post-category">{{ category.name }}</span>
+                        <span class="post-category">{{ category.name }} {% if forloop.counter < post.categories.count %},&nbsp; {% endif %}</span>
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock %}

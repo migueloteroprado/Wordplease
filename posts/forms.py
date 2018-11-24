@@ -1,7 +1,9 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 from blogs.models import Blog
 from posts.models import Post
+
 
 class NewPostForm(forms.ModelForm):
 
@@ -13,3 +15,4 @@ class NewPostForm(forms.ModelForm):
         user = kwargs.pop('user')
         super().__init__(*args, **kwargs)
         self.fields['blog'].queryset = Blog.objects.filter(author=user)
+

@@ -28,7 +28,7 @@ SECRET_KEY = 'Pink Floyd is the Best Band Ever'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -175,7 +175,7 @@ LOGIN_URL = 'login'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 5,
+    'PAGE_SIZE': 10,
     'NON_FIELD_ERRORS_KEY': 'detail',
     'DEFAULT_PARSER_CLASSES'
     '': (

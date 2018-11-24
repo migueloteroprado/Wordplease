@@ -11,10 +11,14 @@
     <form method="POST" novalidate>
         {%  csrf_token %}
 
-        {{ form|crispy }}
-
-        <button type="submit" class="btn btn-primary">Sign up</button>
-
+        <div class="card">
+            <div class="card-body">
+                <div class="signup-form-wrapper">
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-primary">Sign up</button>
+                </div>
+            </div>
+        </div>
     </form>
 
 {%  endblock %}
