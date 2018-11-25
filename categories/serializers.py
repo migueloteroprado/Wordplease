@@ -10,3 +10,9 @@ class CategoryListSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
+class CategorySerializer(CategoryListSerializer):
+
+    class Meta(CategoryListSerializer.Meta):
+
+        fields = '__all__'
+        read_only_fields = ['id', 'pud_date', 'last_modification']

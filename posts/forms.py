@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
 
 from blogs.models import Blog
 from posts.models import Post

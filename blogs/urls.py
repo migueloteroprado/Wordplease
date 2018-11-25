@@ -6,8 +6,9 @@ from blogs.api import BlogsViewSet
 from blogs.views import NewBlogView, BlogListView, UserBlogsView, BlogView
 from posts.api import PostsViewSet
 
-# NestedRouterMixin to have posts endpoints nested into blogs
+
 class NestedDefaultRouter(NestedRouterMixin, DefaultRouter):
+    # Use NestedRouterMixin to have posts endpoints nested into blogs
     pass
 
 
