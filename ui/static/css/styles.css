@@ -1,5 +1,7 @@
 :root {
     --primary-color: cyan;
+    --shadow-color: #999;
+    --background-color: #f9f9f9
 }
 
 body {
@@ -10,12 +12,16 @@ body {
     outline: none !important;
 }
 
+a:hover {
+    text-decoration: none !important;
+}
+
 hr {
     border-top: 1px solid rgba(0,0,0,.15) !important;
 }
 
 .user-icon {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     position: relative;
     top: 2px;
 }
@@ -29,23 +35,28 @@ hr {
 /* NavBar */
 
 .navbar {
-    box-shadow: 2px 2px 5px #999;
+    box-shadow: 2px 2px 5px var(--shadow-color);
 }
 .navbar-brand {
     color: var(--primary-color) !important;
     text-shadow: 1px 1px 1px gray;
+    margin-right: 2rem;
 }
 .navbar-dark .navbar-nav .nav-link {
-    color: #f0f0f0 !important;
+    color: white !important;
 }
 .navbar-dark .navbar-nav .nav-link:hover {
     color: var(--primary-color) !important;
+}
+.nav-link {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
 }
 
 /* Main container */
 
 .container-wrapper {
-    background-color: #f9f9f9;
+    background-color: var(--background-color);
     position: fixed;
     top: 60px;
     left: 0;
@@ -68,7 +79,7 @@ main> h4 {
     border: 1px solid gray;
     border-radius: 5px;
     padding: 12px 10px 12px 17px;
-    box-shadow: 2px 2px 5px #999;
+    box-shadow: 2px 2px 5px var(--shadow-color);
     margin-bottom: 20px;
 }
 
@@ -94,14 +105,6 @@ footer span {
 
 /* Forms */
 
-/*
-select {
-    width: 50% !important;
-    min-width: 200px;
-    max-width: 900px;
-}
-*/
-
 .login-form-wrapper,
 .signup-form-wrapper {
     max-width: 400px;
@@ -116,7 +119,7 @@ select {
 }
 
 input, select, textarea {
-    background-color: #fafafa !important;
+    background-color: var(--background-color) !important;
 }
 input.datetimeinput {
     width:200px;
@@ -132,12 +135,11 @@ input[name="last_name"] {
     max-width: 500px;
 }
 
-
 /* Posts */
 
 .card {
     border: 1px solid #bbb !important;
-    box-shadow: 2px 2px 5px #999;
+    box-shadow: 2px 2px 5px var(--shadow-color);
 }
 .card-header {
     background-color: #efefef !important;
@@ -165,13 +167,13 @@ input[name="last_name"] {
     max-width: 150px;
     margin-right: 20px;
     border-radius: 5px;
-    box-shadow: 2px 2px 5px #4e555b;
+    box-shadow: 2px 2px 5px var(--shadow-color);
 }
 .post-content-wrapper.detail img {
     width: 100%;
     height: auto;
     border-radius: 5px;
-    box-shadow: 2px 2px 5px #4e555b;
+    box-shadow: 2px 2px 5px var(--shadow-color);
     margin-right: 20px;
 }
 
@@ -218,7 +220,6 @@ input[name="last_name"] {
 .post-pub-date {
     font-size: 0.8rem;
 }
-
 
 /* users and blogs*/
 .user.card, blog.carg {
