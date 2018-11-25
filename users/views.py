@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from django.db.models import Count
+from django.db.models.functions import Lower
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -65,7 +65,6 @@ class SignupView(View):
             welcome_url = request.GET.get('next', 'home')
             messages.success(request, 'User signed up successfully!')
             return redirect(welcome_url)
-            #form = SignupForm()
 
         return render(request, 'users/signup.html', {'form': form})
 
@@ -73,7 +72,7 @@ class UsersView(View):
 
     def get(self, request):
 
-        user_list = User.objects.all().order_by('username')
+        user_list = User.objects.all().order_by(Lower('username'))
 
         # Pagination
         paginator = Paginator(user_list, ITEMS_PER_PAGE)

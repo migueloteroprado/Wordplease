@@ -50,7 +50,7 @@
                         <div class="post-content-wrapper list">
                             {%  if post.image %}
                                 <a href="{% url 'post-detail' post.blog.slug post.pk %}">
-                                    <img src="{{ post.image.url }}" alt="{{ post.title }}" title="{{ post.title }}">
+                                    <img src="{{ post.image }}" alt="{{ post.title }}" title="{{ post.title }}">
                                 </a>
                             {% endif %}
                             <div class="post-detail">
@@ -70,39 +70,7 @@
             {% endfor %}
         </div>
 
-        <nav aria-label="...">
-            <ul class="pagination">
-                <li class="page-item {% if not posts.has_previous %} disabled {% endif %}">
-                    {% if posts.has_previous %}
-                        <a class="page-link" href="?page=1"> << </a>
-                    {% else %}
-                        <span class="page-link"> << </span>
-                    {% endif %}
-                </li>
-                <li class="page-item {% if not posts.has_previous %} disabled {% endif %}">
-                    {% if posts.has_previous %}
-                        <a class="page-link" href="?page={{ posts.previous_page_number }}"> < </a>
-                    {% else %}
-                        <span class="page-link"> < </span>
-                    {% endif %}
-                </li>
-                <li class="page-item disabled">
-                    <span class="page-link">
-                        Page {{ posts.number }} of {{ posts.paginator.num_pages }}
-                    </span>
-                </li>
-                <li class="page-item {% if not posts.has_next %} disabled {% endif %}">
-                    {% if posts.has_next %}
-                        <a class="page-link" href="?page={{ posts.next_page_number }}"> > </a>
-                    {% else %}
-                        <span class="page-link"> > </span>
-                    {% endif %}
-                </li>
-                <li class="page-item {% if not posts.has_next %} disabled {% endif %}">
-                    <a class="page-link" href="?page={{ posts.paginator.num_pages }}"> >> </a>
-                </li>
-            </ul>
-        </nav>
+    {% include "pagination.html" with items=posts %}
 
     {% else %}
         <div class="card">

@@ -15,10 +15,9 @@ from project.settings import ITEMS_PER_PAGE
 class PostListView(View):
 
     def get(self, request):
-        now = timezone.now()
         posts_list = Post.objects.prefetch_related('categories')\
             .select_related('author')\
-            .filter(pub_date__lte=now)\
+            .filter(pub_date__lte=timezone.now())\
             .order_by('-pub_date')
 
         paginator = Paginator(posts_list, ITEMS_PER_PAGE)

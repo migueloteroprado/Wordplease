@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.db.models.functions import Lower
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -18,7 +19,7 @@ class BlogListView(View):
 
     def get(self, request):
 
-        blog_list = Blog.objects.all().select_related('author').order_by('name')
+        blog_list = Blog.objects.all().select_related('author').order_by(Lower('name'))
 
         # Pagination
         paginator = Paginator(blog_list, ITEMS_PER_PAGE)
@@ -33,7 +34,7 @@ class UserBlogsView(View):
     def get(self, request, username):
 
         user = get_object_or_404(User, username=username)
-        blog_list = Blog.objects.filter(author=user).select_related('author').order_by('name')
+        blog_list = Blog.objects.filter(author=user).select_related('author').order_by(Lower('name'))
 
         # Pagination
         paginator = Paginator(blog_list, ITEMS_PER_PAGE)
@@ -64,10 +65,9 @@ class BlogView(View):
                 .filter(blog=blog.id, categories__in=cats).distinct()\
                 .order_by('-pub_date')
         else:
-            now = timezone.now()
             posts_list = Post.objects.select_related('author') \
                 .prefetch_related('categories')\
-                .filter(pub_date__lte=now, blog=blog.id, categories__in=cats).distinct()\
+                .filter(pub_date__lte=timezone.now(), blog=blog.id, categories__in=cats).distinct()\
                 .order_by('-pub_date')
 
         paginator = Paginator(posts_list, ITEMS_PER_PAGE)

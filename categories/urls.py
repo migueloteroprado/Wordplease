@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from categories.api import CategoryViewSet
 
 router = DefaultRouter()
-router.register('categories', CategoryViewSet, base_name='users')
+router.register('categories', CategoryViewSet, base_name='categories')
 
 urlpatterns = [
     # API

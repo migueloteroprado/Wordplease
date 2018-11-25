@@ -1,16 +1,8 @@
 from rest_framework import serializers
-from rest_framework.exceptions import APIException
 
 from blogs.models import Blog
-from blogs.serializers import BlogListSerializer
 from categories.serializers import CategoryListSerializer
 from posts.models import Post
-
-
-# return 404 instead 500 if blog doesn't exist
-class BlogNotFoundException(APIException):
-
-    status_code = 404
 
 
 class PostListSerializer(serializers.ModelSerializer):

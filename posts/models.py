@@ -13,7 +13,7 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     summary = models.CharField(max_length=200)
     body = models.TextField()
-    image = models.ImageField(blank=True, null=True)
+    image = models.URLField(blank=True, null=True)
     video = models.URLField(blank=True, null=True)
     categories = models.ManyToManyField(Category)
     creation_date = models.DateTimeField(auto_now_add=True)

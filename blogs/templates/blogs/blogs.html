@@ -31,39 +31,7 @@
 
         <hr>
 
-        <nav aria-label="...">
-            <ul class="pagination">
-                <li class="page-item {% if not blogs.has_previous %} disabled {% endif %}">
-                    {% if blogs.has_previous %}
-                        <a class="page-link" href="?page=1"> << </a>
-                    {% else %}
-                        <span class="page-link"> << </span>
-                    {% endif %}
-                </li>
-                <li class="page-item {% if not blogs.has_previous %} disabled {% endif %}">
-                    {% if blogs.has_previous %}
-                        <a class="page-link" href="?page={{ blogs.previous_page_number }}"> < </a>
-                    {% else %}
-                        <span class="page-link"> < </span>
-                    {% endif %}
-                </li>
-                <li class="page-item disabled">
-                    <span class="page-link">
-                        Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}
-                    </span>
-                </li>
-                <li class="page-item {% if not blogs.has_next %} disabled {% endif %}">
-                    {% if blogs.has_next %}
-                        <a class="page-link" href="?page={{ blogs.next_page_number }}"> > </a>
-                    {% else %}
-                        <span class="page-link"> > </span>
-                    {% endif %}
-                </li>
-                <li class="page-item {% if not blogs.has_next %} disabled {% endif %}">
-                    <a class="page-link" href="?page={{ blogs.paginator.num_pages }}"> >> </a>
-                </li>
-            </ul>
-        </nav>
+    {% include "pagination.html" with items=blogs %}
 
     {% else %}
 

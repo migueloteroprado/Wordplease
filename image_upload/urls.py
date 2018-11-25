@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from image_upload.api import ImageUploadViewSet
 
 router = DefaultRouter()
-router.register('image_upload', ImageUploadViewSet)
+router.register('image_upload', ImageUploadViewSet, base_name='image_uploads')
 
 
 urlpatterns = [
