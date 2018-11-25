@@ -66,7 +66,7 @@ URLS:
 
 ## API REST
 
-#### Users
+### Users
 
 | URL | Operation | Description |
 | --- | --- | --- |
@@ -86,7 +86,53 @@ URLS:
 | ```/api/1.0/categories/<id>/``` | PUT | Update category. Only allowed to superusers. |
 | ```/api/1.0/categories/<id>/``` | DELETE | Delete a category. Only allowed to superusers. |
 
-#### Blogs
+###### Examples:
+
+GET http://127.0.0.1:8000/api/1.0/categories/
+
+```json
+{
+    "count": 5,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "name": "Science"
+        },
+        {
+            "id": 2,
+            "name": "Art"
+        },
+        {
+            "id": 3,
+            "name": "Computers"
+        },
+        {
+            "id": 4,
+            "name": "Work"
+        },
+        {
+            "id": 5,
+            "name": "Music"
+        }
+    ]
+}
+```
+
+GET http://127.0.0.1:8000/api/1.0/categories/1/
+
+```json
+{
+    "id": 1,
+    "name": "Science",
+    "description": "Science",
+    "creation_date": "2018-11-17T20:07:13.117927Z",
+    "last_modification": "2018-11-25T18:12:58.780230Z"
+}
+```
+
+### Blogs
 
 | URL | Operation | Description | Search fields | Ordering fields |
 | --- | --- | --- | --- | --- |
@@ -96,7 +142,54 @@ URLS:
 | ```/api/1.0/blogs/<id>/``` | PUT | Update a blog. Authentication required. Only allowed if authenticated user is the blog author or a superuser. |
 | ```/api/1.0/blogs/<id>/``` | DELETE | Delete a blog. Authentication required. Only allowed if authenticated user is the blog author or a superuser. |
 
-#### Posts
+###### Examples
+
+GET http://localhost:8000/api/1.0/blogs/?ordering=-name
+
+```json
+{
+    "count": 2,
+    "next": "http://localhost:8000/api/1.0/blogs/?page=2",
+    "previous": null,
+    "results": [
+        {
+            "id": 9,
+            "url": "http://localhost:8000/api/1.0/blogs/1/",
+            "name": "Un blog sobre música",
+            "author": {
+                "id": 2,
+                "username": "miguel"
+            },
+            "post_count": 5
+        },
+        {
+            "id": 2,
+            "url": "http://localhost:8000/api/1.0/blogs/2/",
+            "name": "El Blog de Manolo",
+            "author": {
+                "id": 3,
+                "username": "manolo"
+            },
+            "post_count": 15
+        }
+    ]
+}
+```
+GET http://localhost:8000/api/1.0/blogs/1/
+
+```json
+{
+    "id": 1,
+    "name": "Un blog sobre música",
+    "description": "Últimas noticias, piniones y comentarios sobre música",
+    "author": {
+        "id": 2,
+        "username": "miguel"
+    }
+}
+```
+
+### Posts
 
 | URL | Operation | Description | Search fields | Ordering fields | Filter fields |
 | --- | --- | --- | --- | --- | --- |
@@ -107,7 +200,79 @@ URLS:
 | ```/api/1.0/blogs/<blog_id>/posts/<post_id>/``` | PUT | Update a post. Authentication required. Only allowed if authenticated user is the post author or a superuser. |
 | ```/api/1.0/blogs/<blod_id>/posts/<post_id>/``` | DELETE | Delete a post. Authentication required. Only allowed if authenticated user is the post author or a superuser. |
 
-#### Images
+###### Examples
+
+GET http://localhost:8000/api/1.0/blogs/1/posts/?category=1&ordering=-pub_date
+
+```json
+{
+    "count": 3,
+    "next": "http://localhost:8000/api/1.0/blogs/18/posts/?category=1&ordering=-pub_date&page=2",
+    "previous": null,
+    "results": [
+        {
+            "id": 3,
+            "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "image": "http://localhost:8000/uploads/women_redhead_3CieMmS.jpg",
+            "summary": "Nullam porta nunc vel pulvinar malesuada. Maecenas ultricies, neque quis auctor tincidunt, quam turpis lobortis orci, a cursus dolor augue a lacus. Ut tincidunt nisl et massa iaculis imperdiet. Integer rhoncus porttitor lorem, sit amet viverra ante ullamcorper sed",
+            "pub_date": "2018-11-25T13:45:00Z",
+            "author": "Miguel Otero",
+            "blog_name": "Un blog sobre música"
+        },
+        {
+            "id": 2,
+            "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "image": "http://localhost:8000/uploads/women_redhead_3CieMmS.jpg",
+            "summary": "Nullam porta nunc vel pulvinar malesuada. Maecenas ultricies, neque quis auctor tincidunt, quam turpis lobortis orci, a cursus dolor augue a lacus. Ut tincidunt nisl et massa iaculis imperdiet. Integer rhoncus porttitor lorem, sit amet viverra ante ullamcorper sed",
+            "pub_date": "2018-11-25T11:23:00Z",
+            "author": "Miguel Otero",
+            "blog_name": "Un blog sobre música"
+        },
+        {
+            "id": 5,
+            "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "image": "http://localhost:8000/uploads/women_redhead_3CieMmS.jpg",
+            "summary": "Nullam porta nunc vel pulvinar malesuada. Maecenas ultricies, neque quis auctor tincidunt, quam turpis lobortis orci, a cursus dolor augue a lacus. Ut tincidunt nisl et massa iaculis imperdiet. Integer rhoncus porttitor lorem, sit amet viverra ante ullamcorper sed",
+            "pub_date": "2018-11-25T08:17:00Z",
+            "author": "Miguel Otero",
+            "blog_name": "Un blog sobre música"
+        },
+    ]
+}
+```
+
+GET http://localhost:8000/api/1.0/blogs/1/posts/3/
+
+```json
+{
+    "id": 3,
+    "author": "Miguel Otero",
+    "blog": {
+        "id": 1,
+        "name": "Un blog sobre músicaL"
+    },
+    "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "summary": "Nullam porta nunc vel pulvinar malesuada. Maecenas ultricies, neque quis auctor tincidunt, quam turpis lobortis orci, a cursus dolor augue a lacus. Ut tincidunt nisl et massa iaculis imperdiet. Integer rhoncus porttitor lorem, sit amet viverra ante ullamcorper sed",
+    "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porta nunc vel pulvinar malesuada. Maecenas ultricies, neque quis auctor tincidunt, quam turpis lobortis orci, a cursus dolor augue a lacus. Ut tincidunt nisl et massa iaculis imperdiet. Integer rhoncus porttitor lorem, sit amet viverra ante ullamcorper sed. Vivamus enim elit, imperdiet nec porta vitae, gravida et tellus. In interdum in purus ut cursus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur dignissim non nibh ut tincidunt. Duis nec massa vitae magna rutrum pulvinar in in massa. Vivamus sit amet ex lobortis, consequat enim id, pharetra leo. Proin vel fringilla libero, vel commodo ligula. Quisque quis tortor nec diam ornare placerat. Quisque nibh quam, eleifend et convallis vel, bibendum vitae est. Donec vestibulum urna vitae imperdiet auctor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent eget arcu pharetra, egestas ligula sit amet, viverra tellus. Donec a cursus felis. Morbi fermentum diam enim, quis placerat sem blandit vitae.",
+    "image": "http://localhost:8000/uploads/imagen_sobre_musica.jpg",
+    "video": "https://youtu.be/gmHrHQEmp2Q",
+    "creation_date": "2018-11-25T14:45:00Z",
+    "pub_date": "2018-11-25T13:45:00Z",
+    "last_modification": "2018-11-25T14:45:00Z",
+    "categories": [
+        {
+            "id": 2,
+            "name": "Art"
+        },
+        {
+            "id": 5,
+            "name": "Music"
+        }
+    ]
+}
+```
+
+### Images
 
 | URL | Operation | Description | 
 | --- | --- | --- |
@@ -116,10 +281,6 @@ URLS:
 | ```/api/1.0/image_upload/<id>/``` | GET | Obtain image detail. |
 | ```/api/1.0/image_upload/<id>/``` | PUT | Update an image. Authentication required. Only allowed if authenticated user if the image owner or a superuser. |
 | ```/api/1.0/image_upload/<id>/``` | DELETE | Delete an image. Authentication required. Only allowed if authenticated user if the image owner or a superuser. |
-
-#### Examples
-
-
 
 ---
 

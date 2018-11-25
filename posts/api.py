@@ -30,14 +30,16 @@ class PostsViewSet(ModelViewSet):
     ordering = ['-pub_date']
     filter_fields = ['categories']
 
+
+
     def get_queryset(self):
         blog_id = self.kwargs.get('parent_lookup_blogs')
         try:
             blog = Blog.objects.get(pk=blog_id)
             user = self.request.user
             if (user.is_authenticated and user == blog.author) or user.is_superuser:
-                return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs')).select_related('author').prefetch_related('categories')
-            return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs'), pub_date__lte=timezone.now()).select_related('author').prefetch_related('categories')
+                return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs')).select_related('author').select_related('blog').prefetch_related('categories')
+            return Post.objects.filter(blog=self.kwargs.get('parent_lookup_blogs'), pub_date__lte=timezone.now()).select_related('author').select_related('blog').prefetch_related('categories')
         except:
             raise BlogNotFoundException({'detail': 'Blog not found'})
 

@@ -8,14 +8,18 @@ from posts.models import Post
 class PostListSerializer(serializers.ModelSerializer):
 
     author = serializers.SerializerMethodField()
+    blog_name = serializers.SerializerMethodField()
 
     class Meta:
 
         model = Post
-        fields = ['id', 'title', 'image', 'summary', 'pub_date', 'author']
+        fields = ['id', 'title', 'image', 'summary', 'pub_date', 'author', 'blog_name']
 
     def get_author(self, obj):
         return '{0} {1}'.format(obj.author.first_name, obj.author.last_name)
+
+    def get_blog_name(self, obj):
+        return obj.blog.name
 
 
 class PostSerializer(PostListSerializer):

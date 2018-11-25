@@ -13,7 +13,7 @@ class NestedDefaultRouter(NestedRouterMixin, DefaultRouter):
 
 
 router = NestedDefaultRouter()
-blogs_router = router.register('blogs', BlogsViewSet, base_name='blogs')
+blogs_router = router.register('blogs', BlogsViewSet)
 blogs_router.register(
     'posts', PostsViewSet,
     base_name='blog-posts',
