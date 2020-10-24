@@ -9,7 +9,7 @@ djangorestframework-yaml==1.0.3
 drf-extensions==0.4.0
 gunicorn==19.9.0
 pytz==2018.7
-PyYAML==3.13
+PyYAML==5.1
 six==1.11.0
 Pillow==8.0.1
 unicodecsv==0.14.1
